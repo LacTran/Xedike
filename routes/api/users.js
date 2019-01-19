@@ -13,6 +13,10 @@ const { secretKey } = require('../../config/keys')
 //load model
 const { User } = require('../../models/users')
 const { Driver } = require('../../models/driver')
+const { Car } = require('../../models/cars')
+
+// load validate
+const { validateRegisterInput } = require('../../validation/validateRegisterInput');
 
 // config multer
 const storage = multer.diskStorage({
@@ -45,9 +49,19 @@ router.post('/register', (req, res) => {
     // res.status(200).send(req.body)
     const { email, password, fullName, userType, phone, dateOfBirth } = req.body
 
+    const {errors, isValid} = validateRegisterInput(req.body);
+    // check validation
+    if(!isValid) return res.status(400).json(errors)
+
+
     User.findOne({ $or: [{ email }, { phone }] })
         .then(user => {
-            if (user) return res.status(400).json({ error: "Email or Phone exist" })
+            if(user){
+                if(user.email === email) errors.email = "Email already Exist"
+                if(user.phone === phone) errors.phone = "Phone already Exist"
+
+                return res.status(400).json(errors)
+            }
 
             const newUser = new User({
                 email, password, fullName, userType, phone, dateOfBirth
@@ -144,7 +158,7 @@ router.post('/drivers/create-profile',
         const { address, passportId, job } = req.body
         Driver.findOne({ userId: req.user._id })
             .then(driver => {
-                if(driver) return res.status(400).json({error: "Profile exists"})
+                if (driver) return res.status(400).json({ error: "Profile exists" })
 
                 const newDriver = new Driver({
                     userId: req.user._id,
@@ -154,6 +168,57 @@ router.post('/drivers/create-profile',
                 return newDriver.save()
             })
             .then(driver => res.status(200).json(driver))
+            .catch(console.log)
+    }
+)
+
+
+// route: /api/users/add-car
+// desc: add car
+// access: Private (driver)
+router.post('/drivers/add-car',
+    passport.authenticate('jwt', { session: false }),
+    authorizing('driver'),
+    upload.single('carImage'),
+    (req, res) => {
+        const { brand, model, manufacturingYear, licensePlate, numberOfSeats } = req.body;
+        const carImage = req.file.path;
+
+        Driver.findOne({ userId: req.user._id })
+            .then(driver => {
+                if (!driver) return res.status(404).json({ error: "Driver does not exist" })
+
+                const newCar = new Car({
+                    brand, model, manufacturingYear, licensePlate, numberOfSeats, carImage
+                })
+                driver.carInfo.push(newCar)
+                driver.save()
+                    .then(driver => res.status(200).json(driver))
+                    .catch(console.log)
+            })
+            .catch(console.log)
+
+    }
+)
+
+// route: /api/users/drivers/rate/:driverId
+// desc: rate driver (1-5)
+// access: private(passengers)
+router.post('/rate/:driverId',
+    passport.authenticate('jwt', { session: false }),
+    authorizing('passenger'),
+    (req, res) => {
+        const driverId = req.params.driverId;
+        const { rating } = req.body
+        Driver.findById(driverId)
+            .then(driver => {
+                if (!driver) return res.status(404).json({ error: "Driver not found" })
+
+                driver.passengerRates.push(rating)
+                driver.save()
+                    .then(driver => res.status(200).json(driver))
+                    .catch(console.log)
+            })
             .catch(console.log)
     }
 )

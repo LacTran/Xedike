@@ -23,6 +23,13 @@ const app = express();
 
 //  ========== middleware(built-in/3rd party) ==========
 
+// allow CORS
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 // parser
 app.use(express.urlencoded({ extended: true })) //dung form-urlencode tren postman
 app.use(express.json()) // dung raw -> json tren postman
@@ -39,6 +46,7 @@ app.use('/uploads', express.static('uploads'));
 
 // ========== routes ==========
 app.use('/api/users', require('./routes/api/users'))
+app.use('/api/trips', require('./routes/api/trips'))
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

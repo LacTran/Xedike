@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const {CarSchema} = require('./cars')
 
 const DriverSchema = new mongoose.Schema({
     userId: {
@@ -8,7 +9,7 @@ const DriverSchema = new mongoose.Schema({
     },
     address: { type: String, required: true },
     passportId: { type: String, required: true },
-    // carInfo: cac ban tu lam
+    carInfo: [CarSchema],
     passengerRates: {
         type: [Number],
         mix: 1,
