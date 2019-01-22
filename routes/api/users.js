@@ -206,8 +206,8 @@ router.post('/upload-avatar',
     }
 )
 
-// route: /api/users/upload-avatar
-// desc: upload avatar
+// route: /api/users/create-profile
+// desc: create profile
 // access: PUBLIC(admin, driver, passenger)
 router.post('/drivers/create-profile',
     passport.authenticate('jwt', { session: false }),

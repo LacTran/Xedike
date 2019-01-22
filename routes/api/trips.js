@@ -86,26 +86,6 @@ router.get('/finish-trip/:tripId',
 )
 
 
-// route: /api/trips/rate/:driverId
-// desc: rate driver (1-5)
-// access: private(passengers)
-router.post('/rate/:driverId',
-    passport.authenticate('jwt', { session: false }),
-    authorizing('passenger'),
-    (req, res) => {
-        const driverId = req.params.driverId;
-        const {rating} = req.body
-        Driver.findById(driverId)
-            .then(driver => {
-                if(!driver) return res.status(404).json({error: "Driver not found"})
 
-                driver.passengerRates.push(rating)
-                driver.save()
-                    .then(driver => res.status(200).json(driver))
-                    .catch(console.log)
-            })
-            .catch(console.log)
-    }
-)
 
 module.exports = router;
