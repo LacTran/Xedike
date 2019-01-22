@@ -28,13 +28,13 @@ const validateRegisterInput = (data) => {
         errors.password = "Password must be betweeen 6 and 30 characters"
     }
 
-    if (!validator.isEmpty(data.password2)) {
-        errors.password = "Please confirm password!"
-    }
+    // if (!validator.isEmpty(data.password2)) {
+    //     errors.password = "Please confirm password!"
+    // }
 
-    if (!validator.equals(data.password, data.password2)) {
-        errors.password = "Password must match!"
-    }
+    // if (!validator.equals(data.password, data.password2)) {
+    //     errors.password = "Password must match!"
+    // }
 
     // full name
 
