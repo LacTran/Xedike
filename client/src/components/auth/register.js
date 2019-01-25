@@ -35,7 +35,7 @@ class Register extends Component {
 
     render() {
         const { email, password, password2, phone, fullName, dateOfBirth, userType } = this.state
-        const errors = this.props
+        const {errors} = this.props
         return (
             <div className="container">
                 <h1>Register</h1>
@@ -48,7 +48,9 @@ class Register extends Component {
                             className={classnames("form-control", { "is-invalid": errors.email })}
                             name="email"
                             placeholder="Enter email..."
-                            onChange={this.onChange} />
+                            onChange={this.onChange} 
+                            value={email}
+                            />
                         {errors.email && (<div className="invalid-feedback">{errors.email}</div>)}
                     </div>
 
@@ -58,7 +60,9 @@ class Register extends Component {
                             className={classnames("form-control", { "is-invalid": errors.password })}
                             name="password"
                             placeholder="Enter password..."
-                            onChange={this.onChange} />
+                            onChange={this.onChange} 
+                            value={password}
+                            />
                         {errors.password && (<div className="invalid-feedback">{errors.password}</div>)}
                     </div>
 
@@ -68,7 +72,9 @@ class Register extends Component {
                             className={classnames("form-control", { "is-invalid": errors.password2 })}
                             name="password2"
                             placeholder="Enter password2..."
-                            onChange={this.onChange} />
+                            onChange={this.onChange} 
+                            value={password2}
+                            />
                         {errors.password2 && (<div className="invalid-feedback">{errors.password2}</div>)}
                     </div>
 
@@ -78,7 +84,9 @@ class Register extends Component {
                             className={classnames("form-control", { "is-invalid": errors.fullName })}
                             name="fullName"
                             placeholder="Enter full name..."
-                            onChange={this.onChange} />
+                            onChange={this.onChange} 
+                            value={fullName}
+                            />
                         {errors.fullName && (<div className="invalid-feedback">{errors.fullName}</div>)}
                     </div>
 
@@ -88,7 +96,9 @@ class Register extends Component {
                             className={classnames("form-control", { "is-invalid": errors.phone })}
                             name="phone"
                             placeholder="Enter phone..."
-                            onChange={this.onChange} />
+                            onChange={this.onChange} 
+                            value={phone}
+                            />
                         {errors.phone && (<div className="invalid-feedback">{errors.phone}</div>)}
                     </div>
 
@@ -98,7 +108,9 @@ class Register extends Component {
                             className={classnames("form-control", { "is-invalid": errors.dateOfBirth })}
                             name="dateOfBirth"
                             placeholder="Enter DOB..."
-                            onChange={this.onChange} />
+                            onChange={this.onChange} 
+                            value={dateOfBirth}
+                            />
                         {errors.dateOfBirth && (<div className="invalid-feedback">{errors.dateOfBirth}</div>)}
                     </div>
 
@@ -106,7 +118,7 @@ class Register extends Component {
                         <label htmlFor="userType">User Type</label>
                         <select
                             className={classnames("form-control", { "is-invalid": errors.userType })}
-                            name="userType" onChange={this.onChange}>
+                            name="userType" onChange={this.onChange} value={userType}>
                             <option value="-1">Select User Type</option>
                             <option value="driver">Driver</option>
                             <option value="passenger">Passenger</option>
