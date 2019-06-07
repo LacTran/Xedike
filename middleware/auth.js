@@ -6,8 +6,9 @@ function authenticating(req, res, next) {
 
 
 function authorizing(userType) {
-    console.log("authorizing")
+    // console.log("authorizing")
     return (req, res, next) => {
+        // console.log(req)
         if (req.user.userType === userType) {
             return next();
         }

@@ -24,7 +24,7 @@ class Login extends Component {
 
   onChange = (e) => {
     this.setState({
-      [e.target.name]: [e.target.value]
+      [e.target.name]: e.target.value
     })
   }
 
@@ -49,7 +49,8 @@ class Login extends Component {
 
             <div className="form-group">
               <label htmlFor="password">Password:</label>
-              <input type="text"
+              <input
+                type="text"
                 // className={classnames("form-control", { "is-invalid": errors.password })}
                 name="password"
                 placeholder="Enter password..."

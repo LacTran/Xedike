@@ -33,12 +33,25 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-// route: /api/users
-// desc: test first api
-// access: PUBLIC
-router.get('/', (req, res) => {
-    res.status(200).json({ message: "testing api" })
-})
+// // route: /api/users
+// // desc: test first api
+// // access: PUBLIC
+// router.get('/', (req, res) => {
+//     res.status(200).json({ message: "testing api" })
+// })
+
+
+// // route: /api/users/test-private
+// // desc: test passport authentication
+// // access: PRIVATE
+// router.get('/test-private', passport.authenticate('jwt', { session: false }),
+//     authorizing('passenger'),
+//     (req, res) => {
+//         res.status(200).json(req.user)
+//     })
+
+
+//============USER=======///
 
 // route: /api/users/:userId
 // desc: get a user's info
@@ -83,10 +96,11 @@ router.post('/update/:userId',
 // route: /api/users/delete/:userId
 // desc: user deleting their own info/profile
 // access: PRIVATE(USER)
-router.post('/delete/:userId',
+router.post('/delete/',
     passport.authenticate('jwt', { session: false }),
+    authorizing('passengger'),
     (req, res) => {
-        const userId = req.params.userId;
+        const userId = req.user.id;
         User.findById(userId)
             .then(user => {
                 if (!user) return res.status(400).json({ errrors: "User not found" })
@@ -148,27 +162,27 @@ router.post('/register', (req, res) => {
 // access: PUBLIC
 router.post('/login', (req, res) => {
     const { email, password } = req.body
-    User.findOne({ email })
+    User
+        .findOne({ email })
         .then(user => {
-            if (!user) return res.status(400).json({ error: 'Email does not exist' })
-            // if(!user) return res.status(400).json({error: 'Email and password not match'}) // thuc te
+            if (!user) return res.status(400).json({ error: "Email or password is incorrect" }) // => more secure than 404 & email does not exist
 
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
-                    if (!isMatch) res.status(400).json({ error: "Password is incorrect" })
-
+                    if (!isMatch) res.status(400).json({ error: "Email or password is incorrect" }) // => more secure than 404 & email does not exist
+                    // if isMatch = true => create payload for JWT
                     const payload = {
-                        _id: user._id,
+                        id: user._id,
                         email: user.email,
                         fullName: user.fullName,
                         userType: user.userType,
                         avatar: user.avatar
                     }
-
+                    // create JWT
                     jwt.sign(
                         payload,
-                        secretKey,
-                        { expiresIn: '1h' },
+                        secretKey, //secretKey,
+                        { expiresIn: '1h' }, //expire in 1hour
                         (err, token) => {
                             res.status(200).json({
                                 success: true,
@@ -180,16 +194,6 @@ router.post('/login', (req, res) => {
         })
 })
 
-
-// route: /api/users/test-private
-// desc: test passport authentication
-// access: PRIVATE
-router.get('/test-private', passport.authenticate('jwt', { session: false }),
-    authorizing('passenger'),
-    (req, res) => {
-        res.status(200).json(req.user)
-    })
-
 // route: /api/users/upload-avatar
 // desc: upload avatar
 // access: PUBLIC(admin, driver, passenger)
@@ -197,7 +201,7 @@ router.post('/upload-avatar',
     passport.authenticate('jwt', { session: false }),
     upload.single('avatar'),
     (req, res) => {
-        User.findById(req.user._id)
+        User.findById(req.user.id)
             .then(user => {
                 user.avatar = req.file.path
                 return user.save()
@@ -207,20 +211,20 @@ router.post('/upload-avatar',
     }
 )
 
-// route: /api/users/create-profile
-// desc: create profile
-// access: PUBLIC(admin, driver, passenger)
+// route: /api/users/drivers/create-profile
+// desc: create profile for drivers
+// access: PUBLIC(driver)
 router.post('/drivers/create-profile',
     passport.authenticate('jwt', { session: false }),
     authorizing('driver'),
     (req, res) => {
         const { address, passportId, job } = req.body
-        Driver.findOne({ userId: req.user._id })
+        Driver.findOne({ userId: req.user.id })
             .then(driver => {
                 if (driver) return res.status(400).json({ error: "Profile exists" })
 
                 const newDriver = new Driver({
-                    userId: req.user._id,
+                    userId: req.user.id,
                     address, passportId, job
                 })
 
@@ -230,6 +234,7 @@ router.post('/drivers/create-profile',
             .catch(console.log)
     }
 )
+
 
 // route: /api/users/drivers/profile/:userId
 // desc: display a driver's info
@@ -244,6 +249,54 @@ router.get('/drivers/profile/:userId', (req, res) => {
 })
 
 
+// route: /api/users/drivers/update-profile/
+// desc: update profile for drivers
+// access: PRIVATE(driver)
+router.post('/drivers/update-profile',
+    passport.authenticate('jwt', { session: false }),
+    authorizing('driver'),
+    (req, res) => {
+        const { address, passportId, job } = req.body
+        Driver
+            .findOne({ userId: req.user.id })
+            .then(driver => {
+                if (!driver) return res.status(400).json('User not found')
+
+                driver.address = address;
+                driver.passportId = passportId;
+                driver.job = job;
+
+                return driver.save()
+            })
+            .then(driver => res.status(200).json(driver))
+            .catch(console.log)
+    }
+)
+
+
+// route: /api/users/drivers/delete-profile/
+// desc: delete profile for drivers
+// access: PRIVATE(driver)
+router.post('/drivers/delete-profile/',
+    passport.authenticate('jwt', { session: false }),
+    authorizing('driver'),
+    (req, res) => {
+        Driver
+            .findOne({ userId: req.body.user.id })
+            .then(profile => {
+                if (!profile) return res.status(400).json({ error: "No profile exists" })
+
+                Driver.findOneAndDelete({ userId: profile.userId })
+                    .then(profile => res.status(200).json(profile))
+                    .catch(console.log)
+            })
+            .catch(console.log)
+    }
+)
+
+
+
+
 // route: /api/users/add-car
 // desc: add car
 // access: Private (driver)
@@ -255,7 +308,7 @@ router.post('/drivers/add-car',
         const { brand, model, manufacturingYear, licensePlate, numberOfSeats } = req.body;
         const carImage = req.file.path;
 
-        Driver.findOne({ userId: req.user._id })
+        Driver.findOne({ userId: req.user.id })
             .then(driver => {
                 if (!driver) return res.status(404).json({ error: "Driver does not exist" })
 
@@ -293,5 +346,7 @@ router.post('/rate/:driverId',
             .catch(console.log)
     }
 )
+
+
 
 module.exports = router;

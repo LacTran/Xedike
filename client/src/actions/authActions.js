@@ -27,7 +27,7 @@ export const login = (user) => {
             .then(res => {
                 //lay token
                 const { token } = res.data
-                console.log(token)
+                // console.log(token)
                 //jwt => localStorage
                 localStorage.setItem('token', token);
 
@@ -36,12 +36,13 @@ export const login = (user) => {
 
                 //set header jwt => cho nhung lan call api
                 setAuthToken(token)
-                console.log(token)
+                // console.log(token)
                 // state(user) can thay doi thong tin
 
                 dispatch(setCurrentUser(decoded))
             })
             .catch(err => {
+                // console.log(err)
                 dispatch({
                     type: types.GET_ERRORS,
                     payload: err.response.data
