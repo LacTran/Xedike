@@ -12,14 +12,14 @@ const TripSchema = new mongoose.Schema({
     availableSeats: { type: Number, required: true },
     fee: { type: Number, required: true },
     passengers: [{
-        passengersId: { type: String },
+        _id: { type: String },
         locationGetIn: { type: String },
         locationGetOff: { type: String },
         paymentMethod: { type: String },
-        numberOfBookingSeats: {type: Number},
-        notes: {type: String}   
+        numberOfBookingSeats: { type: Number },
+        notes: { type: String }
     }],
-    isFinished: {type: Boolean, required: true, default: false}
+    isFinished: { type: Boolean, required: true, default: false }
 })
 
 const Trip = mongoose.model('Trip', TripSchema);

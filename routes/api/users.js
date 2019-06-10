@@ -191,7 +191,9 @@ router.post('/login', (req, res) => {
                         }
                     )
                 })
+                .catch(console.log)
         })
+        .catch(console.log)
 })
 
 // route: /api/users/upload-avatar
@@ -208,120 +210,6 @@ router.post('/upload-avatar',
             })
             .then(user => res.status(200).json(user))
             .catch(console.log)
-    }
-)
-
-// route: /api/users/drivers/create-profile
-// desc: create profile for drivers
-// access: PUBLIC(driver)
-router.post('/drivers/create-profile',
-    passport.authenticate('jwt', { session: false }),
-    authorizing('driver'),
-    (req, res) => {
-        const { address, passportId, job } = req.body
-        Driver.findOne({ userId: req.user.id })
-            .then(driver => {
-                if (driver) return res.status(400).json({ error: "Profile exists" })
-
-                const newDriver = new Driver({
-                    userId: req.user.id,
-                    address, passportId, job
-                })
-
-                return newDriver.save()
-            })
-            .then(driver => res.status(200).json(driver))
-            .catch(console.log)
-    }
-)
-
-
-// route: /api/users/drivers/profile/:userId
-// desc: display a driver's info
-// access: PUBLIC
-router.get('/drivers/profile/:userId', (req, res) => {
-    const userId = req.params.userId
-    User.findById(userId)
-        .then(user => {
-            if (!user) return res.status(400).json({ errors: 'User not found' })
-            res.status(200).json(user);
-        })
-})
-
-
-// route: /api/users/drivers/update-profile/
-// desc: update profile for drivers
-// access: PRIVATE(driver)
-router.post('/drivers/update-profile',
-    passport.authenticate('jwt', { session: false }),
-    authorizing('driver'),
-    (req, res) => {
-        const { address, passportId, job } = req.body
-        Driver
-            .findOne({ userId: req.user.id })
-            .then(driver => {
-                if (!driver) return res.status(400).json('User not found')
-
-                driver.address = address;
-                driver.passportId = passportId;
-                driver.job = job;
-
-                return driver.save()
-            })
-            .then(driver => res.status(200).json(driver))
-            .catch(console.log)
-    }
-)
-
-
-// route: /api/users/drivers/delete-profile/
-// desc: delete profile for drivers
-// access: PRIVATE(driver)
-router.post('/drivers/delete-profile/',
-    passport.authenticate('jwt', { session: false }),
-    authorizing('driver'),
-    (req, res) => {
-        Driver
-            .findOne({ userId: req.body.user.id })
-            .then(profile => {
-                if (!profile) return res.status(400).json({ error: "No profile exists" })
-
-                Driver.findOneAndDelete({ userId: profile.userId })
-                    .then(profile => res.status(200).json(profile))
-                    .catch(console.log)
-            })
-            .catch(console.log)
-    }
-)
-
-
-
-
-// route: /api/users/add-car
-// desc: add car
-// access: Private (driver)
-router.post('/drivers/add-car',
-    passport.authenticate('jwt', { session: false }),
-    authorizing('driver'),
-    upload.single('carImage'),
-    (req, res) => {
-        const { brand, model, manufacturingYear, licensePlate, numberOfSeats } = req.body;
-        const carImage = req.file.path;
-
-        Driver.findOne({ userId: req.user.id })
-            .then(driver => {
-                if (!driver) return res.status(404).json({ error: "Driver does not exist" })
-
-                const newCar = new Car({
-                    brand, model, manufacturingYear, licensePlate, numberOfSeats, carImage
-                })
-                driver.carInfo.push(newCar)
-                driver.save()
-                    .then(driver => res.status(200).json(driver))
-                    .catch(console.log)
-            })
-            .catch(console.log)
-
     }
 )
 
@@ -346,7 +234,6 @@ router.post('/rate/:driverId',
             .catch(console.log)
     }
 )
-
 
 
 module.exports = router;
