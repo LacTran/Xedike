@@ -9,12 +9,16 @@ import Landing from '../src/components/layouts/landing';
 import Register from '../src/components/auth/register';
 import Login from '../src/components/auth/login';
 import NotFound from '../src/components/layouts/NotFound';
+import Profile from '../src/components/profile/profile'
+
+//
 import setAuthToken from './util/setAuthToken';
 import store from './store';
 import { setCurrentUser, logout } from './actions/authActions';
 // import Profile from './components/profile/profile'
 
 class App extends Component {
+
 
   componentDidMount() {
     if (localStorage && localStorage.token) {
@@ -39,6 +43,7 @@ class App extends Component {
           <Switch>
             <Route path="/" exact component={Landing} />
             <Route path="/register" exact component={Register} />
+            <Route path="/profile" exact component={Profile} />
             <Route path="/login" exact component={Login} />
             <Route path="/" component={NotFound} />
           </Switch>

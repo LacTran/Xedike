@@ -42,79 +42,73 @@ class Register extends Component {
 
                 <form onSubmit={this.onSubmit}>
 
-                    <div className="form-group">
+                    <div className="input-field">
                         <label htmlFor="email">Email:</label>
                         <input type="text"
                             className={classnames("form-control", { "is-invalid": errors.email })}
                             name="email"
-                            placeholder="Enter email..."
                             onChange={this.onChange}
                             value={email}
                         />
                         {errors.email && (<div className="invalid-feedback">{errors.email}</div>)}
                     </div>
 
-                    <div className="form-group">
+                    <div className="input-field">
                         <label htmlFor="password">Password:</label>
                         <input type="text"
                             className={classnames("form-control", { "is-invalid": errors.password })}
                             name="password"
-                            placeholder="Enter password..."
                             onChange={this.onChange}
                             value={password}
                         />
                         {errors.password && (<div className="invalid-feedback">{errors.password}</div>)}
                     </div>
 
-                    <div className="form-group">
+                    <div className="input-field">
                         <label htmlFor="password2">Confirm Password:</label>
                         <input type="text"
                             className={classnames("form-control", { "is-invalid": errors.password2 })}
                             name="password2"
-                            placeholder="Enter password2..."
                             onChange={this.onChange}
                             value={password2}
                         />
                         {errors.password2 && (<div className="invalid-feedback">{errors.password2}</div>)}
                     </div>
 
-                    <div className="form-group">
+                    <div className="input-field">
                         <label htmlFor="fullName">Full Name:</label>
                         <input type="text"
                             className={classnames("form-control", { "is-invalid": errors.fullName })}
                             name="fullName"
-                            placeholder="Enter full name..."
                             onChange={this.onChange}
                             value={fullName}
                         />
                         {errors.fullName && (<div className="invalid-feedback">{errors.fullName}</div>)}
                     </div>
 
-                    <div className="form-group">
+                    <div className="input-field">
                         <label htmlFor="phone">Phone:</label>
                         <input type="text"
                             className={classnames("form-control", { "is-invalid": errors.phone })}
                             name="phone"
-                            placeholder="Enter phone..."
                             onChange={this.onChange}
                             value={phone}
                         />
                         {errors.phone && (<div className="invalid-feedback">{errors.phone}</div>)}
                     </div>
 
-                    <div className="form-group">
+                    <div className="input-field">
                         <label htmlFor="dateOfBirth">Date Of Birth:</label>
-                        <input type="date"
-                            className={classnames("form-control", { "is-invalid": errors.dateOfBirth })}
+                        <input type="text"
+                            className={classnames("datepicker", { "is-invalid": errors.dateOfBirth })}
                             name="dateOfBirth"
-                            placeholder="Enter DOB..."
                             onChange={this.onChange}
                             value={dateOfBirth}
                         />
                         {errors.dateOfBirth && (<div className="invalid-feedback">{errors.dateOfBirth}</div>)}
                     </div>
 
-                    <div className="form-group">
+                    <div className="input-field">
                         <label htmlFor="userType">User Type</label>
                         <select
                             className={classnames("form-control", { "is-invalid": errors.userType })}

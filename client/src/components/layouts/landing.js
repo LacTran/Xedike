@@ -2,34 +2,21 @@ import React from 'react';
 
 const landing = () => {
     return (
-        <div>
-            <div id="carouselId" className="carousel slide" data-ride="carousel">
-                <ol className="carousel-indicators">
-                    <li data-target="#carouselId" data-slide-to="0" className="active"></li>
-                    <li data-target="#carouselId" data-slide-to="1"></li>
-                    <li data-target="#carouselId" data-slide-to="2"></li>
-                </ol>
-                <div className="carousel-inner" role="listbox">
-                    <div className="carousel-item active">
-                        <img src="./img/slide_1.jpg" alt="First slide" height ='600px' width="100%"/>
-                    </div>
-                    <div className="carousel-item">
-                        <img src="./img/slide_2.jpg" alt="Second slide" height ='600px' width="100%" />
-                    </div>
-                    <div className="carousel-item">
-                        <img src="./img/slide_3.jpg" alt="Third slide" height ='600px' width="100%" />
-                    </div>
-                </div>
-                <a className="carousel-control-prev" href="#carouselId" role="button" data-slide="prev">
-                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span className="sr-only">Previous</span>
-                </a>
-                <a className="carousel-control-next" href="#carouselId" role="button" data-slide="next">
-                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span className="sr-only">Next</span>
-                </a>
+        <React.Fragment>
+            <div class="parallax-container">
+                <div class="parallax"><img src="https://source.unsplash.com/random/500x500" alt="" /></div>
             </div>
-        </div>
+            <div class="section white">
+                <div class="row container">
+                    <h2 class="header">Parallax</h2>
+                    <p class="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
+                </div>
+            </div>
+            <div class="parallax-container">
+                <div class="parallax"><img src="https://source.unsplash.com/random/300×300" alt="" /></div>
+            </div>
+        </React.Fragment>
+
     );
 };
 

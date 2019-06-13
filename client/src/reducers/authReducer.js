@@ -1,5 +1,5 @@
 import * as types from '../constants/actionTypes';
-import _ from 'lodash';
+import _ from 'lodash'; //npm i lodash --save
 
 const initialState = {
     isAuthenticated: false,
@@ -12,11 +12,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 user: action.payload,
+                // isAuthenticated: Object.keys(action.payload).length > 0 ? true : false // or use lodash to validate empty object
                 isAuthenticated: !_.isEmpty(action.payload)
             }
-
         default:
-            return state
+            return state;
     }
-}
 
+} 
