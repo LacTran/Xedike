@@ -3,17 +3,17 @@ import React from 'react';
 const landing = () => {
     return (
         <React.Fragment>
-            <div class="parallax-container">
-                <div class="parallax"><img src="https://source.unsplash.com/random/500x500" alt="" /></div>
+            <div className="parallax-container">
+                <div className="parallax"><img src="https://source.unsplash.com/random/500x500" alt="" /></div>
             </div>
-            <div class="section white">
-                <div class="row container">
-                    <h2 class="header">Parallax</h2>
-                    <p class="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
+            <div className="section white">
+                <div className="row container">
+                    <h2 className="header">Parallax</h2>
+                    <p className="grey-text text-darken-3 lighten-3">Parallax is an effect where the background content or image in this case, is moved at a different speed than the foreground content while scrolling.</p>
                 </div>
             </div>
-            <div class="parallax-container">
-                <div class="parallax"><img src="https://source.unsplash.com/random/300×300" alt="" /></div>
+            <div className="parallax-container">
+                <div className="parallax"><img src="https://source.unsplash.com/random/300×300" alt="" /></div>
             </div>
         </React.Fragment>
 

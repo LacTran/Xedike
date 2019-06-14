@@ -12,3 +12,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* inputs */
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]){
+  border-color: #6c63ff;
+  box-shadow: none;
+}
+.select-dropdown.dropdown-trigger{
+  color:#6c63ff;
+}
+
+/* datepicker */
+
+ .datepicker-table td.is-selected, .datepicker-table td.is-selected ,.datepicker-date-display, .datepicker-calendar.month-prev:focus,.datepicker-calendar button:focus{
+  background-color:#6c63ff;
+}
+.confirmation-btns>.btn-flat, .select-dropdown>li>span , .datepicker-table td.is-today{
+  color: #6c63ff;
+}

@@ -33,7 +33,11 @@
     $(document).ready(function () {
       $('.parallax').parallax();
       $('.datepicker').datepicker();
+      $('.datepicker').on('mousedown', function (event) {
+        event.preventDefault();
+      })
       $('.modal').modal();
+      $('select').formSelect();
     });
   </script>
   <!-- Compiled and minified JavaScript -->
