@@ -1,4 +1,4 @@
 module.exports = {
-    mongodbURI : 'mongodb://localhost:27017/fstx-xedike',
+    mongodbURI: 'mongodb://lactran:lactran1@ds163103.mlab.com:63103/xedike',
     secretKey: 'abcxyz'
 }
