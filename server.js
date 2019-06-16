@@ -50,10 +50,10 @@ app.use('/api/trips', require('./routes/api/trips'))
 app.use('/api/users/drivers', require('./routes/api/drivers'))
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client/build'));
-    
-    app.get('*', (request, response) => {
-        response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    app.use('/', express.static(path.join(__dirname, '../client/build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
     });
 }
 
