@@ -20,7 +20,7 @@
     "client": "0.0.1",
     "concurrently": "^4.1.0",
     "create-react-app": "^2.1.3",
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "jsonwebtoken": "^8.4.0",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
